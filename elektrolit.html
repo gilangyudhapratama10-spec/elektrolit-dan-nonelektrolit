@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Larutan Elektrolit</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .tab:hover {
+            background-color: var(--light);
+        }
+        
+        .tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .content {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .card {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .simulation-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .apparatus {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .beaker-container {
+            position: relative;
+            width: 220px;
+            height: 280px;
+            margin-bottom: 1rem;
+        }
+        
+        .beaker {
+            width: 200px;
+            height: 250px;
+            border: 3px solid #95a5a6;
+            border-radius: 0 0 20px 20px;
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            overflow: hidden;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
+        }
+        
+        .liquid {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            transition: background-color 0.5s ease;
+        }
+        
+        .electrodes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding-bottom: 10px;
+            z-index: 2;
+        }
+        
+        .electrode {
+            width: 8px;
+            height: 180px;
+            background-color: #7f8c8d;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .bubbles-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .bubble {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: bubble-rise linear infinite;
+            bottom: 0;
+        }
+        
+        @keyframes bubble-rise {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-200px) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        .solution-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .solution-btn {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+        
+        .strong-electrolyte {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .weak-electrolyte {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .non-electrolyte {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .solution-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .solution-btn.active {
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.2);
+        }
+        
+        .indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--light);
+            border-radius: 8px;
+            width: 100%;
+        }
+        
+        .bulb {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #95a5a6;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+        
+        .bulb::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 25px;
+            background-color: #7f8c8d;
+            bottom: -25px;
+            left: 15px;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .bulb.strong {
+            background-color: #f1c40f;
+            box-shadow: 0 0 20px #f1c40f;
+        }
+        
+        .bulb.weak {
+            background-color: #f39c12;
+            box-shadow: 0 0 10px #f39c12;
+        }
+        
+        .bulb.off {
+            background-color: #95a5a6;
+            box-shadow: none;
+        }
+        
+        .explanation {
+            flex: 2;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .simulation-container {
+                flex-direction: column;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Media Pembelajaran Larutan Elektrolit</h1>
+        <p>Memahami Larutan Elektrolit Kuat, Lemah, dan Nonelektrolit</p>
+    </header>
+    
+    <div class="container">
+        <div class="nav-tabs">
+            <div class="tab active" data-target="materi">Materi Pembelajaran</div>
+            <div class="tab" data-target="simulasi">Simulasi Praktikum</div>
+            <div class="tab" data-target="evaluasi">Evaluasi</div>
+        </div>
+        
+        <div id="materi" class="content active">
+            <h2>Larutan Elektrolit dan Nonelektrolit</h2>
+            
+            <div class="card">
+                <h3>Apa itu Larutan Elektrolit?</h3>
+                <p>Larutan elektrolit adalah larutan yang dapat menghantarkan listrik karena mengandung ion-ion yang bergerak bebas. Sifat penghantar listrik ini disebabkan oleh adanya proses ionisasi, yaitu pemecahan molekul senyawa menjadi ion-ion bermuatan listrik ketika dilarutkan dalam air.</p>
+            </div>
+            
+            <div class="card">
+                <h3>Larutan Nonelektrolit</h3>
+                <p>Larutan nonelektrolit adalah larutan yang tidak dapat menghantarkan listrik karena tidak mengalami ionisasi ketika dilarutkan dalam air. Molekul-molekul dalam larutan nonelektrolit tetap berupa molekul netral yang tidak bermuatan listrik.</p>
+            </div>
+            
+            <h3>Jenis-jenis Larutan Elektrolit</h3>
+            
+            <div class="card">
+                <h4>1. Larutan Elektrolit Kuat</h4>
+                <p>Larutan elektrolit kuat adalah larutan yang dapat menghantarkan listrik dengan baik karena terionisasi sempurna dalam air. Ciri-cirinya:</p>
+                <ul>
+                    <li>Derajat ionisasi (α) mendekati 1</li>
+                    <li>Lampu menyala terang pada alat uji elektrolit</li>
+                    <li>Banyak gelembung gas di sekitar elektroda</li>
+                    <li>Contoh: Asam kuat (HCl, H₂SO₄, HNO₃), Basa kuat (NaOH, KOH, Ca(OH)₂), dan Garam (NaCl, KCl, CuSO₄)</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h4>2. Larutan Elektrolit Lemah</h4>
+                <p>Larutan elektrolit lemah adalah larutan yang dapat menghantarkan listrik dengan lemah karena hanya terionisasi sebagian dalam air. Ciri-cirinya:</p>
+                <ul>
+                    <li>Derajat ionisasi (α) antara 0 dan 1 (biasanya kecil)</li>
+                    <li>Lampu menyala redup atau tidak menyala pada alat uji elektrolit</li>
+                    <li>Sedikit gelembung gas di sekitar elektroda</li>
+                    <li>Contoh: Asam lemah (CH₃COOH, H₂CO₃, HCN), Basa lemah (NH₄OH, Al(OH)₃), dan beberapa garam yang sukar larut</li>
+                </ul>
+            </div>
+            
+            <h3>Perbedaan Larutan Elektrolit dan Nonelektrolit</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspek</th>
+                            <th>Elektrolit Kuat</th>
+                            <th>Elektrolit Lemah</th>
+                            <th>Nonelektrolit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Daya Hantar Listrik</td>
+                            <td>Kuat</td>
+                            <td>Lemah</td>
+                            <td>Tidak menghantar</td>
+                        </tr>
+                        <tr>
+                            <td>Derajat Ionisasi (α)</td>
+                            <td>α ≈ 1</td>
+                            <td>0 < α < 1</td>
+                            <td>α = 0</td>
+                        </tr>
+                        <tr>
+                            <td>Nyala Lampu</td>
+                            <td>Menyala terang</td>
+                            <td>Menyala redup/tidak menyala</td>
+                            <td>Tidak menyala</td>
+                        </tr>
+                        <tr>
+                            <td>Gelembung Gas</td>
+                            <td>Banyak</td>
+                            <td>Sedikit</td>
+                            <td>Tidak ada</td>
+                        </tr>
+                        <tr>
+                            <td>Contoh</td>
+                            <td>HCl, NaOH, NaCl</td>
+                            <td>CH₃COOH, NH₄OH</td>
+                            <td>Gula, Etanol, Urea</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Mekanisme Penghantaran Listrik</h3>
+            <p>Ketika elektroda dicelupkan ke dalam larutan elektrolit dan dihubungkan dengan sumber listrik, ion-ion positif (kation) akan bergerak menuju elektroda negatif (katoda), sedangkan ion-ion negatif (anion) akan bergerak menuju elektroda positif (anoda).</p>
+            <p>Pada elektroda, terjadi reaksi redoks dimana ion-ion tersebut melepaskan atau menerima elektron, menghasilkan gelembung gas. Proses inilah yang menyebabkan aliran listrik melalui larutan.</p>
+        </div>
+        
+        <div id="simulasi" class="content">
+            <h2>Simulasi Praktikum Larutan Elektrolit</h2>
+            <p>Pilih jenis larutan untuk melihat perbedaan perilaku larutan elektrolit kuat, lemah, dan nonelektrolit dalam menghantarkan listrik.</p>
+            
+            <div class="simulation-container">
+                <div class="apparatus">
+                    <h3>Alat Uji Elektrolit</h3>
+                    <div class="beaker-container">
+                        <div class="beaker">
+                            <div class="liquid" id="liquid"></div>
+                            <div class="electrodes">
+                                <div class="electrode"></div>
+                                <div class="electrode"></div>
+                            </div>
+                            <div class="bubbles-container" id="bubbles-container"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <div class="solution-selector">
+                            <button class="solution-btn strong-electrolyte active" data-type="strong">Elektrolit Kuat (HCl)</button>
+                            <button class="solution-btn weak-electrolyte" data-type="weak">Elektrolit Lemah (CH₃COOH)</button>
+                            <button class="solution-btn non-electrolyte" data-type="non">Nonelektrolit (C₁₂H₂₂O₁₁)</button>
+                        </div>
+                        
+                        <div class="indicator">
+                            <div class="bulb strong" id="bulb"></div>
+                            <div>
+                                <h4>Indikator Lampu</h4>
+                                <p id="lamp-status">Lampu menyala terang</p>
+                            </div>
+                        </div>
+                        
+                        <div class="indicator">
+                            <div>
+                                <h4>Indikator Gelembung</h4>
+                                <p id="bubble-status">Banyak gelembung gas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="explanation">
+                    <h3>Penjelasan Simulasi</h3>
+                    <div id="strong-explanation">
+                        <h4>Larutan Elektrolit Kuat (HCl)</h4>
+                        <p>Asam klorida (HCl) merupakan elektrolit kuat karena terionisasi sempurna dalam air:</p>
+                        <p><strong>HCl → H⁺ + Cl⁻</strong></p>
+                        <p>Ion-ion H⁺ dan Cl⁻ yang bergerak bebas menyebabkan:</p>
+                        <ul>
+                            <li>Lampu menyala terang karena daya hantar listrik kuat</li>
+                            <li>Banyak gelembung gas di sekitar elektroda</li>
+                            <li>Derajat ionisasi (α) ≈ 1</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="weak-explanation" style="display: none;">
+                        <h4>Larutan Elektrolit Lemah (CH₃COOH)</h4>
+                        <p>Asam asetat (CH₃COOH) merupakan elektrolit lemah karena hanya terionisasi sebagian dalam air:</p>
+                        <p><strong>CH₃COOH ⇌ H⁺ + CH₃COO⁻</strong></p>
+                        <p>Hanya sedikit ion H⁺ dan CH₃COO⁻ yang terbentuk menyebabkan:</p>
+                        <ul>
+                            <li>Lampu menyala redup atau tidak menyala karena daya hantar listrik lemah</li>
+                            <li>Sedikit gelembung gas di sekitar elektroda</li>
+                            <li>Derajat ionisasi (α) ≈ 0,01</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="non-explanation" style="display: none;">
+                        <h4>Larutan Nonelektrolit (C₁₂H₂₂O₁₁)</h4>
+                        <p>Larutan gula (sukrosa, C₁₂H₂₂O₁₁) merupakan nonelektrolit karena tidak terionisasi dalam air:</p>
+                        <p><strong>C₁₂H₂₂O₁₁ → C₁₂H₂₂O₁₁ (tidak terionisasi)</strong></p>
+                        <p>Tidak adanya ion-ion yang bergerak bebas menyebabkan:</p>
+                        <ul>
+                            <li>Lampu tidak menyala karena tidak ada daya hantar listrik</li>
+                            <li>Tidak ada gelembung gas di sekitar elektroda</li>
+                            <li>Derajat ionisasi (α) = 0</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="evaluasi" class="content">
+            <h2>Evaluasi Pemahaman</h2>
+            <p>Jawablah pertanyaan-pertanyaan berikut untuk menguji pemahaman Anda tentang larutan elektrolit dan nonelektrolit.</p>
+            
+            <div class="card">
+                <h3>Soal 1</h3>
+                <p>Mengapa larutan NaCl dapat menghantarkan listrik, sedangkan larutan gula tidak?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="a"> A. Karena NaCl lebih mudah larut dalam air</label><br>
+                    <label><input type="radio" name="q1" value="b"> B. Karena NaCl terionisasi menjadi ion Na⁺ dan Cl⁻</label><br>
+                    <label><input type="radio" name="q1" value="c"> C. Karena gula memiliki molekul yang lebih besar</label><br>
+                    <label><input type="radio" name="q1" value="d"> D. Karena NaCl adalah senyawa ionik</label><br>
+		    <label><input type="radio" name="q1" value="d"> E. Karena gula adalah senyawa ionik</label>
+                </div>
+                <button class="check-answer" data-question="1">Periksa Jawaban</button>
+                <div class="answer-feedback" id="feedback1"></div>
+            </div>
+            
+            <div class="card">
+                <h3>Soal 2</h3>
+                <p>Manakah dari larutan berikut yang termasuk elektrolit lemah?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="a"> A. Larutan HCl</label><br>
+                    <label><input type="radio" name="q2" value="b"> B. Larutan NaOH</label><br>
+                    <label><input type="radio" name="q2" value="c"> C. Larutan CH₃COOH</label><br>
+                    <label><input type="radio" name="q2" value="d"> D. Larutan NaCl</label><br>
+		    <label><input type="radio" name="q2" value="e"> E. Larutan H₂SO₄</label>
+                </div>
+                <button class="check-answer" data-question="2">Periksa Jawaban</button>
+                <div class="answer-feedback" id="feedback2"></div>
+            </div>
+            
+            <div class="card">
+                <h3>Soal 3</h3>
+                <p>Apa yang terjadi pada lampu dan gelembung gas ketika menguji larutan elektrolit kuat?</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="a"> A. Lampu tidak menyala, banyak gelembung</label><br>
+                    <label><input type="radio" name="q3" value="b"> B. Lampu menyala terang, banyak gelembung</label><br>
+                    <label><input type="radio" name="q3" value="c"> C. Lampu menyala redup, sedikit gelembung</label><br>
+                    <label><input type="radio" name="q3" value="d"> D. Lampu tidak menyala, tidak ada gelembung</label><br>
+		    <label><input type="radio" name="q3" value="d"> E. Lampu menyala redup, banyak gelembung</label>
+                </div>
+                <button class="check-answer" data-question="3">Periksa Jawaban</button>
+                <div class="answer-feedback" id="feedback3"></div>
+            </div>
+            
+            <button id="submit-all" style="background-color: var(--secondary); color: white; padding: 1rem 2rem; border: none; border-radius: 4px; font-size: 1.1rem; cursor: pointer; margin-top: 1rem;">Lihat Hasil Evaluasi</button>
+            <div id="final-score" style="margin-top: 1rem;"></div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Media Pembelajaran Interaktif Kimia - Larutan Elektrolit dan Nonelektrolit</p>
+        <p>© 2025 - Gilang Yuda Pratama</p>
+    </footer>
+
+    <script>
+        // Tab Navigation
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                const targetId = tab.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+        
+        // Simulation functionality
+        const solutionBtns = document.querySelectorAll('.solution-btn');
+        const liquid = document.getElementById('liquid');
+        const bubblesContainer = document.getElementById('bubbles-container');
+        const bulb = document.getElementById('bulb');
+        const lampStatus = document.getElementById('lamp-status');
+        const bubbleStatus = document.getElementById('bubble-status');
+        const explanations = {
+            strong: document.getElementById('strong-explanation'),
+            weak: document.getElementById('weak-explanation'),
+            non: document.getElementById('non-explanation')
+        };
+        
+        // Bubble animation variables
+        let bubbleInterval;
+        let currentBubbleCount = 0;
+        
+        // Initial setup
+        setSolution('strong');
+        
+        solutionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                solutionBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const type = btn.getAttribute('data-type');
+                setSolution(type);
+            });
+        });
+        
+        function setSolution(type) {
+            // Reset all explanations
+            Object.values(explanations).forEach(exp => exp.style.display = 'none');
+            
+            // Set liquid color and properties
+            let color, bulbClass, lampText, bubbleText, bubbleCount;
+            
+            switch(type) {
+                case 'strong':
+                    color = 'rgba(231, 76, 60, 0.7)';
+                    bulbClass = 'strong';
+                    lampText = 'Lampu menyala terang';
+                    bubbleText = 'Banyak gelembung gas';
+                    bubbleCount = 15;
+                    explanations.strong.style.display = 'block';
+                    break;
+                case 'weak':
+                    color = 'rgba(243, 156, 18, 0.7)';
+                    bulbClass = 'weak';
+                    lampText = 'Lampu menyala redup';
+                    bubbleText = 'Sedikit gelembung gas';
+                    bubbleCount = 5;
+                    explanations.weak.style.display = 'block';
+                    break;
+                case 'non':
+                    color = 'rgba(52, 152, 219, 0.7)';
+                    bulbClass = 'off';
+                    lampText = 'Lampu tidak menyala';
+                    bubbleText = 'Tidak ada gelembung gas';
+                    bubbleCount = 0;
+                    explanations.non.style.display = 'block';
+                    break;
+            }
+            
+            // Update liquid - volume tetap sama
+            liquid.style.backgroundColor = color;
+            
+            // Update bulb
+            bulb.className = 'bulb ' + bulbClass;
+            lampStatus.textContent = lampText;
+            bubbleStatus.textContent = bubbleText;
+            
+            // Update bubbles
+            updateBubbles(bubbleCount);
+        }
+        
+        function updateBubbles(count) {
+            // Clear existing bubbles and interval
+            bubblesContainer.innerHTML = '';
+            clearInterval(bubbleInterval);
+            currentBubbleCount = count;
+            
+            if (count > 0) {
+                // Create initial bubbles
+                for (let i = 0; i < count; i++) {
+                    createBubble();
+                }
+                
+                // Set interval to maintain bubble count
+                bubbleInterval = setInterval(() => {
+                    const currentBubbles = bubblesContainer.querySelectorAll('.bubble');
+                    if (currentBubbles.length < currentBubbleCount) {
+                        createBubble();
+                    }
+                }, 500);
+            }
+        }
+        
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            
+            // Random properties
+            const size = Math.random() * 12 + 8;
+            const left = Math.random() * 160 + 20;
+            const duration = Math.random() * 3 + 2;
+            const delay = Math.random() * 1;
+            
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+            bubble.style.left = `${left}px`;
+            bubble.style.animationDuration = `${duration}s`;
+            bubble.style.animationDelay = `${delay}s`;
+            
+            bubblesContainer.appendChild(bubble);
+            
+            // Remove bubble after animation completes
+            setTimeout(() => {
+                if (bubble.parentNode === bubblesContainer) {
+                    bubblesContainer.removeChild(bubble);
+                }
+            }, (duration + delay) * 1000);
+        }
+        
+        // Evaluation functionality
+        const correctAnswers = {
+            '1': 'b',
+            '2': 'c',
+            '3': 'b'
+        };
+        
+        document.querySelectorAll('.check-answer').forEach(button => {
+            button.addEventListener('click', () => {
+                const questionNum = button.getAttribute('data-question');
+                const selectedOption = document.querySelector(`input[name="q${questionNum}"]:checked`);
+                const feedback = document.getElementById(`feedback${questionNum}`);
+                
+                if (!selectedOption) {
+                    feedback.textContent = 'Silakan pilih jawaban terlebih dahulu.';
+                    feedback.style.color = 'var(--danger)';
+                    return;
+                }
+                
+                const userAnswer = selectedOption.value;
+                const correctAnswer = correctAnswers[questionNum];
+                
+                if (userAnswer === correctAnswer) {
+                    feedback.textContent = 'Jawaban Anda benar!';
+                    feedback.style.color = 'var(--secondary)';
+                } else {
+                    feedback.textContent = 'Jawaban Anda salah. Silakan coba lagi.';
+                    feedback.style.color = 'var(--danger)';
+                }
+            });
+        });
+        
+        document.getElementById('submit-all').addEventListener('click', () => {
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedOption && selectedOption.value === correctAnswers[i]) {
+                    score++;
+                }
+            }
+            
+            const finalScore = document.getElementById('final-score');
+            const percentage = (score / totalQuestions) * 100;
+            
+            finalScore.innerHTML = `
+                <div class="card">
+                    <h3>Hasil Evaluasi</h3>
+                    <p>Anda menjawab benar ${score} dari ${totalQuestions} soal.</p>
+                    <p>Nilai: ${percentage.toFixed(1)}</p>
+                    <p>${percentage >= 70 ? 'Selamat! Anda telah memahami materi dengan baik.' : 'Silakan pelajari kembali materi untuk meningkatkan pemahaman.'}</p>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
